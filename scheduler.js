@@ -1,31 +1,37 @@
 "use strict";
-(() => {
-    const MOMENT = moment();
 
-    // Retrieve last page state from storage
-    var state = localStorage.getItem("state");
-    if (state != null) $(".container").html(state);
+//Wait until document is loaded
+$(document).ready(function() {
 
-    //Display today's date
+    // Retrieve last page state from storage unless it's from a previous day
+    const timestamp = moment(localStorage.getItem("timestamp"));
+    const saveDay = parseInt(timestamp.format("DD"));
+    const currDay = parseInt(moment().format("DD"));
+    if (timestamp != null && saveDay === currDay)
+        $(".container").html(localStorage.getItem("state"));
+
+    // Display today's date
     $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
 
-    //Color-code time blocks
+    // Color-code time blocks
     $(".hour").each(function() {
-        //get value of time block
-        var a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
-        //get value of current hour
-        var b = parseInt(moment().format("HH"));
-        //assign color code
+        // get value of time block
+        const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
+        // get value of current hour
+        const b = parseInt(moment().format("HH"));
+        // assign color code
         if (a < b) $(this).next().addClass("past");
         else if (a > b) $(this).next().addClass("future");
         else $(this).next().addClass("present");
     });
 
-    //Whenever user clicks the save button
+    // Whenever user clicks the save button
     $(".saveBtn").on("click", function() {
-        //store the corresponding text in the page
+        // store the corresponding text in the page
         $(this).prev().text($(this).prev().val());
-        //save page state to local storage
+        // save page state to local storage
         localStorage.setItem("state", $(".container").html());
+        // save timestamp to local storage
+        localStorage.setItem("timestamp", moment().toISOString());
     });
-})();
+});
