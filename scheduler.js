@@ -1,5 +1,7 @@
 "use strict";
 
+// localStorage.clear();
+
 //Wait until document is loaded
 $(document).ready(function() {
 
@@ -14,16 +16,19 @@ $(document).ready(function() {
     $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
 
     // Color-code time blocks
-    $(".hour").each(function() {
-        // get value of time block
-        const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
-        // get value of current hour
-        const b = parseInt(moment().format("HH"));
-        // assign color code
-        if (a < b) $(this).next().addClass("past");
-        else if (a > b) $(this).next().addClass("future");
-        else $(this).next().addClass("present");
-    });
+    const interval = setInterval(function() {
+        $(".hour").each(function() {
+            // get value of time block
+            const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
+            // get value of current hour
+            const b = parseInt(moment().format("HH"));
+            // assign color code
+            $(this).next().removeClass("past present future");
+            if (a < b) $(this).next().addClass("past");
+            else if (a > b) $(this).next().addClass("future");
+            else $(this).next().addClass("present");
+        });
+    }, 60000);
 
     // Whenever user clicks the save button
     $(".saveBtn").on("click", function() {
