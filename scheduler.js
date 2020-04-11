@@ -1,6 +1,6 @@
 "use strict";
 
-//Wait until document is loaded
+// Wait until document is loaded
 $(document).ready(function() {
 
     // Retrieve last page state from storage unless it's from a previous day
@@ -14,20 +14,19 @@ $(document).ready(function() {
     $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
 
     // Color-code time blocks
-    const interval = setInterval(function() {
-        console.log();
-        $(".hour").each(function() {
-            // get value of time block
-            const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
-            // get value of current hour
-            const b = parseInt(moment().format("HH"));
-            // assign color code
-            $(this).next().removeClass("past present future");
-            if (a < b) $(this).next().addClass("past");
-            else if (a > b) $(this).next().addClass("future");
-            else $(this).next().addClass("present");
-        });
-    }, 60000);
+    function colorCode() {
+        // get value of time block
+        const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
+        // get value of current hour
+        const b = parseInt(moment().format("HH"));
+        // assign color-code
+        $(this).next().removeClass("past present future");
+        if (a < b) $(this).next().addClass("past");
+        else if (a > b) $(this).next().addClass("future");
+        else $(this).next().addClass("present");
+    }
+    // Update color-codes every minute 
+    setInterval(function() { $(".hour").each(colorCode()); }, 60000);
 
     // Whenever user clicks the save button
     $(".saveBtn").on("click", function() {
