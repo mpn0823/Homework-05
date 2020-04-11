@@ -8,7 +8,9 @@ $(document).ready(function() {
     const saveDay = parseInt(timestamp.format("DD"));
     const currDay = parseInt(moment().format("DD"));
     if (timestamp != null && saveDay === currDay)
-        $(".container").html(localStorage.getItem("state"));
+        $("textarea").each(function(index) {
+            $(this).text(localStorage.getItem(index.toString()));
+        });
 
     // Display today's date
     $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
@@ -28,15 +30,15 @@ $(document).ready(function() {
         });
     }
     colorCode();
-    // Update color-codes every minute 
-    setInterval(colorCode(), 60000);
+    // Update color-codes every minute
+    setInterval(function() { colorCode(); }, 60000);
 
     // Whenever user clicks the save button
     $(".saveBtn").on("click", function() {
-        // store the corresponding text in the page
-        $(this).prev().text($(this).prev().val());
         // save page state to local storage
-        localStorage.setItem("state", $(".container").html());
+        $("textarea").each(function(index) {
+            localStorage.setItem(index.toString(), $(this).val());
+        });
         // save timestamp to local storage
         localStorage.setItem("timestamp", moment().toISOString());
     });
