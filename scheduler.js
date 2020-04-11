@@ -1,7 +1,5 @@
 "use strict";
 
-// localStorage.clear();
-
 //Wait until document is loaded
 $(document).ready(function() {
 
@@ -17,6 +15,7 @@ $(document).ready(function() {
 
     // Color-code time blocks
     const interval = setInterval(function() {
+        console.log();
         $(".hour").each(function() {
             // get value of time block
             const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
