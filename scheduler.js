@@ -15,18 +15,21 @@ $(document).ready(function() {
 
     // Color-code time blocks
     function colorCode() {
-        // get value of time block
-        const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
-        // get value of current hour
-        const b = parseInt(moment().format("HH"));
-        // assign color-code
-        $(this).next().removeClass("past present future");
-        if (a < b) $(this).next().addClass("past");
-        else if (a > b) $(this).next().addClass("future");
-        else $(this).next().addClass("present");
+        $(".hour").each(function() {
+            // get value of time block
+            const a = parseInt((moment($(this).text(), ["hh A"]).format("HH")));
+            // get value of current hour
+            const b = parseInt(moment().format("HH"));
+            // assign color-code
+            $(this).next().removeClass("past present future");
+            if (a < b) $(this).next().addClass("past");
+            else if (a > b) $(this).next().addClass("future");
+            else $(this).next().addClass("present");
+        });
     }
+    colorCode();
     // Update color-codes every minute 
-    setInterval(function() { $(".hour").each(colorCode()); }, 60000);
+    setInterval(colorCode(), 60000);
 
     // Whenever user clicks the save button
     $(".saveBtn").on("click", function() {
